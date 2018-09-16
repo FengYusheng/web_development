@@ -20,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
         # She notices the page title and header mention to-do lists.
         self.assertIn('To-Do', self.brower.title)
         header_text = self.brower.find_element_by_tag_name('h1').text
-        self.assertIs('To-Do', header_text)
+        self.assertIn('To-Do', header_text)
 
         # She is invited to enter a to-do item straight away.
         inputbox = self.brower.find_element_by_id('id_new_item')
@@ -34,10 +34,10 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
         table = self.brower.find_element_by_id('id_list_table')
-        rows = table.find_element_by_tag_name('tr')
+        rows = table.find_elements_by_tag_name('tr')
 
         # We apply a generator expression inside any.
-        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows))
+        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows), 'New item did not appear in table.')
 
         # There is still a text box inviting her to add another item. She enters "Use peacock feathers to make a fly"
         # (Edith is very methodical).
