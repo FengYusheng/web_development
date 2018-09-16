@@ -33,6 +33,10 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Buy peacock feathers" as an item in a to-do list.
         inputbox.send_keys(Keys.ENTER)
 
+        # selenium.common.exceptions.StaleElementReferenceException:
+        import time
+        time.sleep(2)
+
         table = self.brower.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
 
