@@ -21,5 +21,6 @@ from lists import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', views.home_page)
-    re_path(r'^$', views.home_page)
+    re_path(r'^$', views.home_page),
+    re_path(r'^lists/the-only-list-in-the-world/$', views.view_list)
 ]
