@@ -106,7 +106,6 @@ class NewItemTest(TestCase):
 
 
 
-
 class ListAndItemModelsTest(TestCase):
     def test_saving_and_retrieving_items(self):
         list_ = List()
