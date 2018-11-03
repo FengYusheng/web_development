@@ -106,8 +106,25 @@ class NewVistorTest(LiveServerTestCase):
         # Eidth wonders whether the site wiil remember her list. Then she sees
         # that the site has gernerate a unique URL for her -- there is some
         # explanatory text to that effect.
-        self.fail("Finish the test.")
+        # self.fail("Finish the test.")
 
         # She visits that URL - her to-do list is still there.
 
         # Satisfiled, she goes backk to sleep.
+
+
+    def test_layout_and_styling(self):
+        # Edith goes to the home page.
+        self.browser.get(self.live_server_url)
+        print(self.browser.get_window_position(), self.browser.get_window_size())
+        # NOTE: I can't set the window size smaller than (1221, 617). Why?
+        # self.browser.set_window_size(800, 600)
+        self.browser.set_window_size(1221, 617)
+
+        # She notices the input box is nicely centered.
+        inpubtox = self.browser.find_element_by_id('id_new_item')
+        # print(inpubtox.location, inpubtox.size)
+        # print(self.browser.get_window_position(), self.browser.get_window_size())
+        self.assertAlmostEqual(inpubtox.location['x']+inpubtox.size['width']/2,
+                               610,
+                               delta=5)
