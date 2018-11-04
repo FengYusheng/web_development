@@ -1,4 +1,6 @@
 from django.test import LiveServerTestCase
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
@@ -9,7 +11,7 @@ import time
 # https://docs.python.org/3.5/library/functions.html#super
 
 
-class NewVistorTest(LiveServerTestCase):
+class NewVistorTest(StaticLiveServerTestCase):
     # @classmethod
     # def setUpClass(cls):
     #     super().setUpClass()
@@ -120,6 +122,7 @@ class NewVistorTest(LiveServerTestCase):
         # NOTE: I can't set the window size smaller than (1221, 617). Why?
         # self.browser.set_window_size(800, 600)
         self.browser.set_window_size(1221, 617)
+        time.sleep(5)
 
         # She notices the input box is nicely centered.
         inpubtox = self.browser.find_element_by_id('id_new_item')
