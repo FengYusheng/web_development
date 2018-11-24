@@ -6,23 +6,28 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 
 import time
+import sys
+import os
 
 # https://docs.djangoproject.com/en/2.1/topics/testing/tools/#provided-test-case-classes
 # https://docs.python.org/3.5/library/functions.html#super
-
-
+#https://www.obeythetestinggoat.com/book/chapter_manual_deployment.html
 class NewVistorTest(StaticLiveServerTestCase):
-    # @classmethod
-    # def setUpClass(cls):
-    #     super().setUpClass()
-    #     cls.browser = webdriver.Firefox()
-    #     cls.browser.implicitly_wait(10)
-    #
-    #
-    # @classmethod
-    # def tearDownClass(cls):
-    #     cls.browser.quit()
-    #     super().tearDownClass()
+    @classmethod
+    def setUpClass(cls):
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            cls.server_url = 'http://' + staging_server
+            return
+        super().setUpClass()
+        cls.server_url = cls.live_server_url
+
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.server_url == cls.live_server_url:
+            super().tearDownClass()
+
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -49,7 +54,7 @@ class NewVistorTest(StaticLiveServerTestCase):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith has heard about a cool new online to-do app. She goes to check out its homepage.
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         # print(self.live_server_url)
 
         # She notices the page title and header mention to-do listsself.
@@ -93,7 +98,7 @@ class NewVistorTest(StaticLiveServerTestCase):
         self.browser = webdriver.Firefox()
 
         # Francis visits the home page. There is no sign of Edith's list.
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         body_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('1: Buy peacock feathers', body_text)
         self.assertNotIn('2: Use peacock feathers to make a fly', body_text)
@@ -117,7 +122,7 @@ class NewVistorTest(StaticLiveServerTestCase):
 
     def test_layout_and_styling(self):
         # Edith goes to the home page.
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         print(self.browser.get_window_position(), self.browser.get_window_size())
         # NOTE: I can't set the window size smaller than (1221, 617). Why?
         # self.browser.set_window_size(800, 600)
@@ -129,5 +134,6 @@ class NewVistorTest(StaticLiveServerTestCase):
         # print(inpubtox.location, inpubtox.size)
         # print(self.browser.get_window_position(), self.browser.get_window_size())
         self.assertAlmostEqual(inpubtox.location['x']+inpubtox.size['width']/2,
-                               610,
+                               # 610,
+                               325,
                                delta=5)
