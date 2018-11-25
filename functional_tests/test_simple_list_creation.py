@@ -1,57 +1,13 @@
-from django.test import LiveServerTestCase
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
+# -*- coding: utf-8 -*-
 
 import time
-import sys
-import os
 
-# https://docs.djangoproject.com/en/2.1/topics/testing/tools/#provided-test-case-classes
-# https://docs.python.org/3.5/library/functions.html#super
-#https://www.obeythetestinggoat.com/book/chapter_manual_deployment.html
-class NewVistorTest(StaticLiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        staging_server = os.environ.get('STAGING_SERVER')
-        if staging_server:
-            cls.server_url = 'http://' + staging_server
-            return
-        super().setUpClass()
-        cls.server_url = cls.live_server_url
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
+from .base import FunctionalTest
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.server_url == cls.live_server_url:
-            super().tearDownClass()
-
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(5)
-
-
-    def tearDown(self):
-        self.browser.quit()
-
-
-    def wait_for_row_in_list_table(self, row_text):
-        start_time = time.time()
-        while True:
-            try:
-                table = self.browser.find_element_by_id('id_list_table')
-                rows = table.find_elements_by_tag_name('tr')
-                self.assertIn(row_text, [row.text for row in rows])
-                return
-            except (AssertionError, WebDriverException) as e:
-                if time.time() - start_time > 10:
-                    raise e
-                time.sleep(0.5)
-
-
+class NewVistorTest(FunctionalTest):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith has heard about a cool new online to-do app. She goes to check out its homepage.
         self.browser.get(self.server_url)
@@ -118,22 +74,3 @@ class NewVistorTest(StaticLiveServerTestCase):
         # She visits that URL - her to-do list is still there.
 
         # Satisfiled, she goes backk to sleep.
-
-
-    def test_layout_and_styling(self):
-        # Edith goes to the home page.
-        self.browser.get(self.server_url)
-        print(self.browser.get_window_position(), self.browser.get_window_size())
-        # NOTE: I can't set the window size smaller than (1221, 617). Why?
-        # self.browser.set_window_size(800, 600)
-        self.browser.set_window_size(1221, 617)
-        time.sleep(5)
-
-        # She notices the input box is nicely centered.
-        inpubtox = self.browser.find_element_by_id('id_new_item')
-        # print(inpubtox.location, inpubtox.size)
-        # print(self.browser.get_window_position(), self.browser.get_window_size())
-        self.assertAlmostEqual(inpubtox.location['x']+inpubtox.size['width']/2,
-                               # 610,
-                               325,
-                               delta=5)
