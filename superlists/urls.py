@@ -20,8 +20,6 @@ from lists import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', views.home_page)
     re_path(r'^$', views.home_page),
     re_path(r'^lists/', include('lists.urls')),
-    re_path(r'^lists/new$', views.new_list)
 ]
