@@ -19,7 +19,7 @@ class NewVistorTest(FunctionalTest):
         self.assertIn('To-Do', header_text)
 
         # she is invited to enter a to-do item straight away.
-        inpubtox = self.browser.find_element_by_id('id_new_item')
+        inpubtox = self.get_item_input_box()
         self.assertEqual(
             inpubtox.get_attribute('placeholder'),
             'Enter a to-do item'
@@ -38,7 +38,7 @@ class NewVistorTest(FunctionalTest):
         # very methodical)
 
         # Retreive the input box again since redirecting
-        inpubtox = self.browser.find_element_by_id('id_new_item')
+        inpubtox = self.get_item_input_box()
         inpubtox.send_keys('Use peacock feathers to make a fly')
         inpubtox.send_keys(Keys.ENTER)
 
@@ -61,7 +61,7 @@ class NewVistorTest(FunctionalTest):
 
         # Francis starts a new list by entering a new item. He is less interesting
         # than Edith.
-        inpubtox = self.browser.find_element_by_id('id_new_item')
+        inpubtox = self.get_item_input_box()
         inpubtox.send_keys('Buy milk')
         inpubtox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')

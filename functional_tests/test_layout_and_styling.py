@@ -14,7 +14,7 @@ class LayoutAndStylingTest(FunctionalTest):
         time.sleep(5)
 
         # She notices the input box is nicely centered.
-        inpubtox = self.browser.find_element_by_id('id_new_item')
+        inpubtox = self.get_item_input_box()
         # print(inpubtox.location, inpubtox.size)
         # print(self.browser.get_window_position(), self.browser.get_window_size())
         self.assertAlmostEqual(inpubtox.location['x']+inpubtox.size['width']/2,
