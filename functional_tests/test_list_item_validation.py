@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import time
+from unittest import skip
 from .base import FunctionalTest
 
 class ItemValidationTest(FunctionalTest):
+    @skip
     def test_cannot_add_empty_list_items(self):
         # Edith goes to the home page and accidentally tries to submit an empty
         # list item. She hits Enter on the empty input box.
@@ -11,7 +13,6 @@ class ItemValidationTest(FunctionalTest):
 
         # The home page refreshes, and there is an error message saying that
         # list items cannot be blank.
-        time.sleep(1)
         error = self.browser.find_element_by_css_selector('.has-error')
         self.assertEqual(error.text, "You can't have an empty list item.")
 
